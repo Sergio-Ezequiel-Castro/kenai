@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Viewport mobile-first: sin zoom de usuario para feel de app nativa -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0c10" />
+  <meta name="description" content="Kenai Garage — Sistema de mantenimiento automotriz para Toyota Hilux" />
+  <!-- PWA: se puede agregar al home screen -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Kenai Garage" />
+
+  <title>Kenai Garage</title>
+
+  <!-- Font Awesome 6 — íconos -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        crossorigin="anonymous" />
+
+  <!-- Tipografías: Barlow Condensed (display) + Outfit (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           SPLASH  SCREEN                ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="splash" aria-hidden="true">
+  <div class="splash-inner">
+    <div class="splash-logo">
+      <i class="fa-solid fa-gear"></i>
+    </div>
+    <p class="splash-brand">KENAI<span>GARAGE</span></p>
+    <p class="splash-tagline">Sistema de mantenimiento automotriz</p>
+    <div class="splash-bar"><div class="splash-progress"></div></div>
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════╗
+     ║                 APP                     ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="app" class="app" style="display:none">
+
+  <!-- ── HEADER ─────────────────────────────── -->
+  <header class="app-header" id="app-header">
+    <div class="header-brand">
+      <span class="header-icon"><i class="fa-solid fa-gear"></i></span>
+      <div>
+        <h1 class="header-title">KENAI GARAGE</h1>
+        <p class="header-sub" id="header-sub">Mantenimiento automotriz</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="hbtn" id="btn-notif" title="Alertas" aria-label="Alertas de servicio">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notif-dot" id="notif-dot" hidden></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── CONTENIDO ──────────────────────────── -->
+  <main class="app-main" id="app-main">
+
+    <!-- ══════════════════════════════
+         SECCIÓN: INICIO / DASHBOARD
+    ══════════════════════════════ -->
+    <section id="sec-home" class="sec active">
+
+      <!-- Tarjeta del vehículo -->
+      <div class="vehicle-hero" id="vehicle-hero" role="button" tabindex="0"
+           title="Ir a info del vehículo" aria-label="Ver info del vehículo">
+        <div class="vh-glow"></div>
+        <div class="vh-top">
+          <span class="vh-chip">Mi vehículo</span>
+          <i class="fa-solid fa-truck-pickup vh-car-icon"></i>
+        </div>
+        <h2 class="vh-name" id="vh-name">— Sin configurar —</h2>
+        <p class="vh-engine" id="vh-engine">Configurá tu vehículo en "Mi Auto"</p>
+        <div class="vh-stats">
+          <div class="vh-stat">
+            <span class="vh-stat-val" id="vh-km">—</span>
+            <span class="vh-stat-lbl">km actuales</span>
+          </div>
+          <span class="vh-divider"></span>
+          <div class="vh-stat">
+            <span class="vh-stat-val" id="vh-oil">—</span>
+            <span class="vh-stat-lbl">aceite</span>
+          </div>
+          <span class="vh-divider"></span>
+          <div class="vh-stat">
+            <span class="vh-stat-val" id="vh-torque">—</span>
+            <span class="vh-stat-lbl">torque</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alertas próximos servicios -->
+      <div class="sec-header">
+        <h3 class="sec-title">
+          <i class="fa-solid fa-circle-exclamation"></i> Próximos servicios
+        </h3>
+        <span class="sec-count" id="upcoming-count">0</span>
+      </div>
+      <div id="upcoming-wrap" class="card-stack"></div>
+
+      <!-- Estadísticas rápidas -->
+      <div class="sec-header" style="margin-top:1.5rem">
+        <h3 class="sec-title"><i class="fa-solid fa-chart-simple"></i> Resumen</h3>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-tile">
+          <i class="fa-solid fa-wrench ti orange"></i>
+          <strong id="st-total">0</strong>
+          <span>Total</span>
+        </div>
+        <div class="stat-tile">
+          <i class="fa-solid fa-circle-check ti green"></i>
+          <strong id="st-done">0</strong>
+          <span>Hechos</span>
+        </div>
+        <div class="stat-tile">
+          <i class="fa-solid fa-hourglass-half ti yellow"></i>
+          <strong id="st-pend">0</strong>
+          <span>Pendientes</span>
+        </div>
+        <div class="stat-tile">
+          <i class="fa-solid fa-toolbox ti blue"></i>
+          <strong id="st-jobs">0</strong>
+          <span>Trabajos</span>
+        </div>
+      </div>
+
+      <!-- Último registro -->
+      <div class="sec-header" style="margin-top:1.5rem">
+        <h3 class="sec-title">
+          <i class="fa-solid fa-clock-rotate-left"></i> Último registro
+        </h3>
+      </div>
+      <div id="last-wrap"></div>
+
+    </section>
+
+
+    <!-- ══════════════════════════════
+         SECCIÓN: MANTENIMIENTOS
+    ══════════════════════════════ -->
+    <section id="sec-maint" class="sec">
+
+      <div class="sec-header">
+        <h3 class="sec-title">
+          <i class="fa-solid fa-screwdriver-wrench"></i> Historial
+        </h3>
+        <button class="btn-add" id="btn-new-maint" aria-label="Agregar mantenimiento">
+          <i class="fa-solid fa-plus"></i> Agregar
+        </button>
+      </div>
+
+      <!-- Filtros por estado -->
+      <div class="filter-row" role="group" aria-label="Filtrar mantenimientos">
+        <button class="fpill active" data-f="all">Todos</button>
+        <button class="fpill" data-f="completado">Completados</button>
+        <button class="fpill" data-f="pendiente">Pendientes</button>
+        <button class="fpill" data-f="en-proceso">En proceso</button>
+      </div>
+
+      <!-- Lista -->
+      <div id="maint-list" class="card-stack"></div>
+
+    </section>
+
+
+    <!-- ══════════════════════════════
+         SECCIÓN: HERRAMIENTAS
+    ══════════════════════════════ -->
+    <section id="sec-tools" class="sec">
+
+      <div class="sec-header">
+        <h3 class="sec-title">
+          <i class="fa-solid fa-toolbox"></i> Herramientas
+        </h3>
+        <button class="btn-add" id="btn-new-job" aria-label="Agregar trabajo">
+          <i class="fa-solid fa-plus"></i> Trabajo
+        </button>
+      </div>
+
+      <div class="info-banner">
+        <i class="fa-solid fa-circle-info"></i>
+        Trabajos mecánicos con herramientas necesarias. Tocá una tarjeta para expandirla.
+      </div>
+
+      <div id="jobs-list" class="card-stack"></div>
+
+    </section>
+
+
+    <!-- ══════════════════════════════
+         SECCIÓN: MI AUTO (info)
+    ══════════════════════════════ -->
+    <section id="sec-info" class="sec">
+
+      <div class="sec-header">
+        <h3 class="sec-title">
+          <i class="fa-solid fa-truck-pickup"></i> Mi Auto
+        </h3>
+        <button class="btn-save-vehicle" id="btn-save-veh">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar
+        </button>
+      </div>
+
+      <form id="vehicle-form" class="v-form" novalidate>
+
+        <label class="flabel">
+          <i class="fa-solid fa-tag"></i> Modelo
+          <input type="text" id="vf-model" class="finput" placeholder="Ej: Toyota Hilux 3.0" />
+        </label>
+
+        <div class="frow">
+          <label class="flabel">
+            <i class="fa-regular fa-calendar"></i> Año
+            <input type="number" id="vf-year" class="finput" placeholder="2015"
+                   min="1970" max="2035" />
+          </label>
+          <label class="flabel">
+            <i class="fa-solid fa-gear"></i> Motor
+            <input type="text" id="vf-engine" class="finput" placeholder="1KD-FTV 3.0D" />
+          </label>
+        </div>
+
+        <label class="flabel">
+          <i class="fa-solid fa-gauge-high"></i> Kilometraje actual
+          <input type="number" id="vf-km" class="finput" placeholder="150000" />
+        </label>
+
+        <div class="frow">
+          <label class="flabel">
+            <i class="fa-solid fa-droplet"></i> Tipo de aceite
+            <input type="text" id="vf-oil" class="finput" placeholder="5W-30 Sint." />
+          </label>
+          <label class="flabel">
+            <i class="fa-solid fa-flask"></i> Cap. aceite
+            <input type="text" id="vf-oilcap" class="finput" placeholder="6.5 L" />
+          </label>
+        </div>
+
+        <label class="flabel">
+          <i class="fa-solid fa-rotate"></i> Torque de ruedas
+          <input type="text" id="vf-torque" class="finput" placeholder="Ej: 120 Nm" />
+        </label>
+
+        <label class="flabel">
+          <i class="fa-regular fa-note-sticky"></i> Observaciones
+          <textarea id="vf-notes" class="finput ftextarea"
+                    placeholder="Notas importantes del vehículo…"></textarea>
+        </label>
+
+      </form>
+
+      <!-- Ficha técnica guardada -->
+      <div class="tech-card" id="tech-card" hidden>
+        <h4 class="tech-title"><i class="fa-solid fa-file-lines"></i> Ficha técnica guardada</h4>
+        <div id="tech-body"></div>
+      </div>
+
+    </section>
+
+  </main><!-- /app-main -->
+
+
+  <!-- ── NAVBAR INFERIOR ─────────────────────── -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <button class="nav-btn active" data-sec="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Inicio</span>
+    </button>
+    <button class="nav-btn" data-sec="maint">
+      <i class="fa-solid fa-screwdriver-wrench"></i>
+      <span>Servicios</span>
+    </button>
+    <button class="nav-btn" data-sec="tools">
+      <i class="fa-solid fa-toolbox"></i>
+      <span>Herramientas</span>
+    </button>
+    <button class="nav-btn" data-sec="info">
+      <i class="fa-solid fa-truck-pickup"></i>
+      <span>Mi Auto</span>
+    </button>
+  </nav>
+
+</div><!-- /app -->
+
+
+<!-- ╔══════════════════════════════════════════╗
+     ║        MODAL: MANTENIMIENTO             ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="modal-maint" class="modal-wrap" role="dialog" aria-modal="true"
+     aria-labelledby="modal-maint-title">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+
+    <div class="modal-head">
+      <h3 class="modal-title" id="modal-maint-title">Nuevo Mantenimiento</h3>
+      <button class="mclose" data-close="modal-maint" aria-label="Cerrar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <input type="hidden" id="m-edit-id" />
+
+      <label class="flabel">
+        Título <span class="req">*</span>
+        <input type="text" id="m-title" class="finput" placeholder="Ej: Cambio de aceite" />
+      </label>
+
+      <label class="flabel">
+        Descripción
+        <textarea id="m-desc" class="finput ftextarea"
+                  placeholder="Detalles del trabajo realizado…"></textarea>
+      </label>
+
+      <div class="frow">
+        <label class="flabel">
+          Fecha <span class="req">*</span>
+          <input type="date" id="m-date" class="finput" />
+        </label>
+        <label class="flabel">
+          Kilometraje
+          <input type="number" id="m-km" class="finput" placeholder="150000" />
+        </label>
+      </div>
+
+      <label class="flabel">
+        Próximo servicio (km)
+        <input type="number" id="m-next-km" class="finput" placeholder="Ej: 160000" />
+      </label>
+
+      <label class="flabel">
+        Estado
+        <select id="m-status" class="finput fselect">
+          <option value="completado">✅ Completado</option>
+          <option value="pendiente">⏳ Pendiente</option>
+          <option value="en-proceso">🔧 En proceso</option>
+        </select>
+      </label>
+
+      <label class="flabel">
+        Herramientas utilizadas
+        <input type="text" id="m-tools" class="finput"
+               placeholder="Llave 10mm, Torquímetro, Cric…" />
+        <small class="fhint">Separadas por coma</small>
+      </label>
+
+      <label class="flabel">
+        Costo (opcional)
+        <input type="number" id="m-cost" class="finput" placeholder="$ 0" />
+      </label>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-ghost" data-close="modal-maint">Cancelar</button>
+      <button class="btn-primary" id="btn-save-maint">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════╗
+     ║         MODAL: TRABAJO / JOB            ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="modal-job" class="modal-wrap" role="dialog" aria-modal="true"
+     aria-labelledby="modal-job-title">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+
+    <div class="modal-head">
+      <h3 class="modal-title" id="modal-job-title">Nuevo Trabajo</h3>
+      <button class="mclose" data-close="modal-job" aria-label="Cerrar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <input type="hidden" id="j-edit-id" />
+
+      <label class="flabel">
+        Nombre del trabajo <span class="req">*</span>
+        <input type="text" id="j-name" class="finput"
+               placeholder="Ej: Distribución Hilux 1KD" />
+      </label>
+
+      <label class="flabel">
+        Descripción
+        <textarea id="j-desc" class="finput ftextarea"
+                  placeholder="Descripción del proceso…"></textarea>
+      </label>
+
+      <label class="flabel">
+        Dificultad
+        <select id="j-diff" class="finput fselect">
+          <option value="facil">🟢 Fácil</option>
+          <option value="medio" selected>🟡 Medio</option>
+          <option value="dificil">🔴 Difícil</option>
+        </select>
+      </label>
+
+      <label class="flabel">
+        Herramientas necesarias <span class="req">*</span>
+        <textarea id="j-tools" class="finput ftextarea tall"
+                  placeholder="Llave 10mm&#10;Llave 12mm&#10;Torquímetro&#10;Cric&#10;Destornilladores"></textarea>
+        <small class="fhint">Una herramienta por línea</small>
+      </label>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-ghost" data-close="modal-job">Cancelar</button>
+      <button class="btn-primary" id="btn-save-job">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════╗
+     ║        MODAL: DETALLE MAINT.            ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="modal-detail" class="modal-wrap" role="dialog" aria-modal="true"
+     aria-labelledby="modal-detail-title">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+
+    <div class="modal-head">
+      <h3 class="modal-title" id="modal-detail-title">Detalle</h3>
+      <button class="mclose" data-close="modal-detail" aria-label="Cerrar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" id="detail-body"></div>
+
+    <div class="modal-foot">
+      <button class="btn-danger" id="btn-detail-del">
+        <i class="fa-solid fa-trash"></i> Eliminar
+      </button>
+      <button class="btn-primary" id="btn-detail-edit">
+        <i class="fa-solid fa-pen"></i> Editar
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Toast container -->
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
